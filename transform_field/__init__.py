@@ -44,7 +44,7 @@ def float_to_decimal(value):
 
 
 class TransformFieldException(Exception):
-    '''A known exception for which we don't need to pring a stack trace'''
+    '''A known exception for which we don't need to print a stack trace'''
     pass
 
 
@@ -113,7 +113,6 @@ class TransformField(object):
 
                         if trans.field_id in message.record:
 
-                            LOGGER.info(f'Before: {message.record}')
                             if trans.nested_field_id:
 
                                 # Handle nested dicts and lists
@@ -134,8 +133,6 @@ class TransformField(object):
                                     when=trans.when)
 
                                 message.record[trans.field_id] = transformed
-
-                            LOGGER.info(f'After: {message.record}')
 
                     if self.validate_records:
                         # Validate the transformed columns
