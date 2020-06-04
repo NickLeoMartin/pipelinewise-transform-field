@@ -72,11 +72,15 @@ def extract_email_prefix(string):
     return string
 
 def prefix_hash_email(string):
-    domain = extract_email_domain(string)
-    prefix = extract_email_prefix(string)
-    prefix_hash = hashlib.sha256(prefix.encode('utf-8')).hexdigest()
 
-    return f'{prefix_hash}@{domain}'
+    if string:
+        domain = extract_email_domain(string)
+        prefix = extract_email_prefix(string)
+        prefix_hash = hashlib.sha256(prefix.encode('utf-8')).hexdigest()
+
+        return f'{prefix_hash}@{domain}'
+    # Ignore empty strings
+    return string
 
 def do_transform(record, field, trans_type, when=None):
     """Transform a value by a certain transformation type.
