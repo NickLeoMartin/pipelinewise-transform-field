@@ -125,7 +125,6 @@ def do_nested_transform(record,
                                            nested_field,
                                            trans_type,
                                            when=when)
-                print('***', transformed)
                 item[nested_field] = transformed
                 new_record.append(item)
 

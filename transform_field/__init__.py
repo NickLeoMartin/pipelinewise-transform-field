@@ -86,7 +86,7 @@ class TransformField(object):
                 trans["field_id"],
                 trans["type"],
                 trans.get('when'),
-                trans.get('nested_field_id', None)
+                trans.get('nested_field_id')
             ))
 
     def flush(self):
@@ -113,7 +113,7 @@ class TransformField(object):
 
                         if trans.field_id in message.record:
 
-                            print(trans)
+                            LOGGER.info(f'Before: {message.record}')
                             if trans.nested_field_id:
 
                                 # Handle nested dicts and lists
@@ -134,6 +134,8 @@ class TransformField(object):
                                     when=trans.when)
 
                                 message.record[trans.field_id] = transformed
+
+                            LOGGER.info(f'After: {message.record}')
 
                     if self.validate_records:
                         # Validate the transformed columns

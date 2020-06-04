@@ -4,7 +4,7 @@ import sys
 import json
 import tempfile
 
-from nose.tools import assert_raises 
+from nose.tools import assert_raises
 from transform_field import TransformField, TransformFieldException
 
 
@@ -33,6 +33,7 @@ class Base(unittest.TestCase):
             for line in tap_stdout.readlines():
                 lines.append(line)
 
+        print(lines)
         return lines
 
 
@@ -76,7 +77,9 @@ class TestEndToEnd(Base):
                 {'column': 'column_10', 'regex_match': 'sensitive' },
               ]
           },
-          { 'tap_stream_name': 'dummy_stream', 'field_id': 'column_12', 'type': 'MASK-HIDDEN' }
+          { 'tap_stream_name': 'dummy_stream', 'field_id': 'column_12', 'type': 'MASK-HIDDEN' },
+          { 'tap_stream_name': 'dummy_stream', 'field_id': 'column_13', 'nested_field_id': 'value',
+            'type': 'EMAIL-DOMAIN-EXTRACTION' }
         ]}
 
         transform_field = TransformField(trans_config)
@@ -121,7 +124,7 @@ class TestEndToEnd(Base):
             }
         )
 
-        # Third message is a RECORD message with transformed values 
+        # Third message is a RECORD message with transformed values
         self.assertEquals(
             singer_output_messages[2],
             {
@@ -150,7 +153,7 @@ class TestEndToEnd(Base):
             }
         )
 
-        # Third message is a RECORD message with transformed values 
+        # Third message is a RECORD message with transformed values
         self.assertEquals(
             singer_output_messages[3],
             {
