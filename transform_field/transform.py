@@ -60,6 +60,23 @@ def extract_email_domain(string):
 
     return string
 
+def extract_email_prefix(string):
+    if not isinstance(string, str):
+        raise ValueError(f'{string} is not a string')
+
+    split_string = string.split('@')
+    if len(split_string) > 1:
+        # Extract last entry
+        return split_string[0]
+
+    return string
+
+def prefix_hash_email(string):
+    domain = extract_email_domain(string)
+    prefix = extract_email_prefix(string)
+    prefix_hash = hashlib.sha256(prefix.encode('utf-8')).hexdigest()
+
+    return f'{prefix_hash}@{domain}'
 
 def do_transform(record, field, trans_type, when=None):
     """Transform a value by a certain transformation type.
@@ -89,9 +106,12 @@ def do_transform(record, field, trans_type, when=None):
             # Transforms any value to "hidden"
             elif trans_type == "MASK-HIDDEN":
                 return 'hidden'
-            # Transforms any value to "hidden"
+            # Transforms any value to only email domain
             elif trans_type == 'EMAIL-DOMAIN-EXTRACTION':
                 return extract_email_domain(value)
+            # Transforms any value to only prefix hash & email domain
+            elif trans_type == 'EMAIL-PREFIX-HASH':
+                return prefix_hash_email(value)
             # Return the original value if cannot find transformation type
             else:
                 return value

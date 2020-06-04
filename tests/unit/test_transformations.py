@@ -14,9 +14,8 @@ class TestNestedUnit(unittest.TestCase):
     def setUp(self):
         self.config = {}
 
-
     def test_set_null(self):
-        """TEST SET-NULL transformation"""
+        """TEST EMAIL-DOMAIN-EXTRACTION transformation"""
         example = {
             'email': [
                 {
@@ -32,6 +31,29 @@ class TestNestedUnit(unittest.TestCase):
                 field='email',
                 nested_field='value',
                 trans_type='EMAIL-DOMAIN-EXTRACTION',
+                when=None),
+            expected_response
+        )
+
+    def test_set_null(self):
+        """TEST EMAIL-PREFIX-HASH transformation"""
+        example = {
+            'email': [
+                {
+                    'id': '123',
+                    'value': '123@domain.com'
+                }
+            ]
+        }
+        expected_response = [{
+            'id': '123',
+            'value': 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3@domain.com'}]
+        self.assertEqual(
+            transform_field.transform.do_nested_transform(
+                record=example,
+                field='email',
+                nested_field='value',
+                trans_type='EMAIL-PREFIX-HASH',
                 when=None),
             expected_response
         )
